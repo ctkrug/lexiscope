@@ -29,4 +29,11 @@ describe('renderSentimentGauge', () => {
     renderSentimentGauge(svg, { score: 1.234, matchedWords: 1, label: 'positive' });
     expect(svg.querySelector('text.label')?.textContent).toBe('positive (1.23)');
   });
+
+  it('clamps the fill fraction instead of throwing for an out-of-range score', () => {
+    const svg = makeSvg();
+    // An intensifier ("extremely") can push a single word's score past ±5.
+    expect(() => renderSentimentGauge(svg, { score: 8, matchedWords: 1, label: 'positive' })).not.toThrow();
+    expect(svg.querySelector('path.fill')?.getAttribute('data-fraction')).toBe('1');
+  });
 });
