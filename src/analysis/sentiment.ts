@@ -12,13 +12,12 @@ export interface SentimentResult {
 const NEUTRAL_BAND = 0.15;
 
 /**
- * Scores text polarity by averaging lexicon hits, flipping the sign of any
- * word immediately preceded by a negator ("not good" -> negative) and
- * scaling it by any immediately preceding intensifier ("very good" scores
- * higher than a bare "good").
+ * Scores a pre-tokenized word list, flipping the sign of any word
+ * immediately preceded by a negator ("not good" -> negative) and scaling
+ * it by any immediately preceding intensifier ("very good" scores higher
+ * than a bare "good").
  */
-export function analyzeSentiment(text: string): SentimentResult {
-  const words = tokenizeWords(text);
+function scoreWords(words: string[]): SentimentResult {
   let total = 0;
   let matchedWords = 0;
   let negate = false;
@@ -49,4 +48,9 @@ export function analyzeSentiment(text: string): SentimentResult {
   const label = score > NEUTRAL_BAND ? 'positive' : score < -NEUTRAL_BAND ? 'negative' : 'neutral';
 
   return { score, matchedWords, label };
+}
+
+/** Scores the polarity of an entire text, in the same style as {@link scoreWords}. */
+export function analyzeSentiment(text: string): SentimentResult {
+  return scoreWords(tokenizeWords(text));
 }
