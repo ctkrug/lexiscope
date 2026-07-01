@@ -23,4 +23,22 @@ describe('analyzeSentiment', () => {
     const result = analyzeSentiment('the quick brown fox jumps');
     expect(result).toEqual({ score: 0, matchedWords: 0, label: 'neutral' });
   });
+
+  it('scores an intensified word higher than the bare word', () => {
+    const bare = analyzeSentiment('good');
+    const intensified = analyzeSentiment('very good');
+    expect(intensified.score).toBeGreaterThan(bare.score);
+  });
+
+  it('scores a downplayed word lower than the bare word', () => {
+    const bare = analyzeSentiment('good');
+    const downplayed = analyzeSentiment('slightly good');
+    expect(downplayed.score).toBeLessThan(bare.score);
+    expect(downplayed.score).toBeGreaterThan(0);
+  });
+
+  it('combines negation and intensification', () => {
+    const result = analyzeSentiment('not very good');
+    expect(result.score).toBeLessThan(analyzeSentiment('not good').score);
+  });
 });
