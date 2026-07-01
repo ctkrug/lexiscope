@@ -6,13 +6,13 @@ commits.
 
 ## Epic 1: Core analysis engine
 
-- [ ] Harden the tokenizer for numbers, hyphenated words, and unicode
+- [x] Harden the tokenizer for numbers, hyphenated words, and unicode
       letters (accents, non-Latin scripts) instead of ASCII-only matching.
-- [ ] Expand the sentiment lexicon and add intensifier handling (e.g.
+- [x] Expand the sentiment lexicon and add intensifier handling (e.g.
       "very good" scoring higher than "good").
-- [ ] Support per-sentence sentiment breakdown, not just an aggregate score,
+- [x] Support per-sentence sentiment breakdown, not just an aggregate score,
       so a paragraph's tone shifts can be surfaced.
-- [ ] Make the stopword list and frequency limit configurable from the UI
+- [x] Make the stopword list and frequency limit configurable from the UI
       instead of hardcoded constants.
 
 ## Epic 2: Visualizations & interactivity
