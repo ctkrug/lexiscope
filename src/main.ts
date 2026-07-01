@@ -17,6 +17,8 @@ import type { ReadabilityResult } from './analysis/readability';
 
 const DEBOUNCE_MS = 120;
 const DEFAULT_WORD_LIMIT = 15;
+const MIN_WORD_LIMIT = 3;
+const MAX_WORD_LIMIT = 50;
 const THEME_STORAGE_KEY = 'lexiscope-theme';
 
 const input = document.querySelector<HTMLTextAreaElement>('#input');
@@ -84,9 +86,11 @@ function activeStopwords(): Set<string> {
   return extra.length > 0 ? new Set([...STOPWORDS, ...extra]) : STOPWORDS;
 }
 
+/** Reads the word-limit input, clamped to the range its min/max attributes advertise. */
 function activeWordLimit(): number {
   const parsed = Number(wordLimitInput?.value);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_WORD_LIMIT;
+  if (!Number.isFinite(parsed) || parsed <= 0) return DEFAULT_WORD_LIMIT;
+  return Math.min(MAX_WORD_LIMIT, Math.max(MIN_WORD_LIMIT, Math.trunc(parsed)));
 }
 
 /** Reflects the current text into the URL so the analysis can be linked or bookmarked. */
