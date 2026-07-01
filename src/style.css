@@ -48,6 +48,14 @@ header h1 {
   margin-bottom: 0.25rem;
 }
 
+.header-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+#github-link,
 #theme-toggle {
   flex-shrink: 0;
   font-family: inherit;
@@ -60,9 +68,23 @@ header h1 {
   cursor: pointer;
 }
 
+#github-link {
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+#github-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 header p {
   margin-top: 0;
   color: var(--muted);
+}
+
+header .tagline {
+  max-width: 46ch;
 }
 
 #input {

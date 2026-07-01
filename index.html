@@ -18,11 +18,20 @@
   <body>
     <main id="app">
       <header>
-        <div>
+        <div class="brand">
           <h1>Lexiscope</h1>
-          <p>Paste or type text below. Everything updates live, entirely in your browser.</p>
+          <p class="tagline">See how your writing reads as you type. No sign-up, no upload, nothing leaves your browser.</p>
         </div>
-        <button type="button" id="theme-toggle" aria-label="Toggle dark mode">🌙 Dark</button>
+        <div class="header-actions">
+          <a
+            id="github-link"
+            href="https://github.com/ctkrug/lexiscope"
+            target="_blank"
+            rel="noopener"
+            >View on GitHub</a
+          >
+          <button type="button" id="theme-toggle" aria-label="Toggle dark mode">🌙 Dark</button>
+        </div>
       </header>
       <textarea
         id="input"
