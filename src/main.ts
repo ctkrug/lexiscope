@@ -6,6 +6,7 @@ import { tokenizeWords } from './analysis/tokenizer';
 import { renderFrequencyChart } from './viz/frequencyChart';
 import { renderSentimentGauge } from './viz/sentimentGauge';
 import { renderReadabilityPanel } from './viz/readabilityPanel';
+import { renderStatsStrip } from './viz/statsStrip';
 
 const DEBOUNCE_MS = 120;
 const DEFAULT_WORD_LIMIT = 15;
@@ -16,6 +17,7 @@ const extraStopwordsInput = document.querySelector<HTMLInputElement>('#extra-sto
 const frequencySvg = document.querySelector<SVGSVGElement>('#frequency-chart');
 const sentimentSvg = document.querySelector<SVGSVGElement>('#sentiment-gauge');
 const readabilitySvg = document.querySelector<SVGSVGElement>('#readability-panel');
+const statsStripEl = document.querySelector<HTMLElement>('#stats-strip');
 
 /** Merges the built-in stopword list with the comma-separated custom entries. */
 function activeStopwords(): Set<string> {
@@ -37,7 +39,15 @@ function render(text: string): void {
     renderFrequencyChart(frequencySvg, frequency, tokenizeWords(text).length);
   }
   if (sentimentSvg) renderSentimentGauge(sentimentSvg, analyzeSentiment(text));
-  if (readabilitySvg) renderReadabilityPanel(readabilitySvg, analyzeReadability(text));
+
+  const readability = analyzeReadability(text);
+  if (readabilitySvg) renderReadabilityPanel(readabilitySvg, readability);
+  if (statsStripEl) {
+    renderStatsStrip(statsStripEl, {
+      wordCount: readability.wordCount,
+      sentenceCount: readability.sentenceCount,
+    });
+  }
 }
 
 function debounce(fn: (text: string) => void, delay: number): (text: string) => void {
