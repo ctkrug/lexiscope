@@ -28,12 +28,12 @@ commits.
 
 ## Epic 3: Input & performance
 
-- [ ] Support loading text from a dropped or selected `.txt` file, not just
+- [x] Support loading text from a dropped or selected `.txt` file, not just
       pasting into the textarea.
-- [ ] Add a lightweight loading/pending indicator for large pastes (multi-
+- [x] Add a lightweight loading/pending indicator for large pastes (multi-
       thousand-word) while the debounced analysis is in flight.
-- [ ] Add a dark mode theme toggle.
-- [ ] Add a mobile-responsive layout for narrow viewports (stack panels,
+- [x] Add a dark mode theme toggle.
+- [x] Add a mobile-responsive layout for narrow viewports (stack panels,
       shrink chart margins).
 
 ## Epic 4: Deployment & sharing
