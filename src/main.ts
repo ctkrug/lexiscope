@@ -2,6 +2,7 @@ import { wordFrequency } from './analysis/frequency';
 import { analyzeSentiment } from './analysis/sentiment';
 import { analyzeReadability } from './analysis/readability';
 import { STOPWORDS } from './analysis/stopwords';
+import { tokenizeWords } from './analysis/tokenizer';
 import { renderFrequencyChart } from './viz/frequencyChart';
 import { renderSentimentGauge } from './viz/sentimentGauge';
 import { renderReadabilityPanel } from './viz/readabilityPanel';
@@ -33,7 +34,7 @@ function activeWordLimit(): number {
 function render(text: string): void {
   if (frequencySvg) {
     const frequency = wordFrequency(text, { limit: activeWordLimit(), stopwords: activeStopwords() });
-    renderFrequencyChart(frequencySvg, frequency);
+    renderFrequencyChart(frequencySvg, frequency, tokenizeWords(text).length);
   }
   if (sentimentSvg) renderSentimentGauge(sentimentSvg, analyzeSentiment(text));
   if (readabilitySvg) renderReadabilityPanel(readabilitySvg, analyzeReadability(text));
