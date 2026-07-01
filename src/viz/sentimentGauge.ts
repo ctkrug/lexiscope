@@ -32,16 +32,16 @@ export function renderSentimentGauge(svg: SVGSVGElement, result: SentimentResult
     fill = selection.append('path').attr('class', 'fill').attr('transform', center);
   }
 
+  const previousFraction = Number(fill.attr('data-fraction') ?? 0);
   fill
+    .attr('fill', SENTIMENT_COLORS[result.label])
+    .attr('data-fraction', fraction)
     .transition()
     .duration(300)
-    .attrTween('d', function tween(this: SVGPathElement) {
-      const previous = Number(this.getAttribute('data-fraction') ?? 0);
-      const interpolate = d3.interpolateNumber(previous, fraction);
+    .attrTween('d', () => {
+      const interpolate = d3.interpolateNumber(previousFraction, fraction);
       return (t: number) => arcGenerator(interpolate(t)) ?? '';
-    })
-    .attr('fill', SENTIMENT_COLORS[result.label])
-    .attr('data-fraction', fraction);
+    });
 
   let label = selection.select<SVGTextElement>('text.label');
   if (label.empty()) {
