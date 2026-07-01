@@ -46,6 +46,12 @@ describe('analyzeSentiment', () => {
     const result = analyzeSentiment('not a bad restaurant');
     expect(result.score).toBeGreaterThan(0);
   });
+
+  it('resets negation scope once it has applied to a scored word', () => {
+    const result = analyzeSentiment('not bad but also good');
+    expect(result.matchedWords).toBe(2);
+    expect(result.score).toBeGreaterThan(0);
+  });
 });
 
 describe('analyzeSentimentBySentence', () => {
