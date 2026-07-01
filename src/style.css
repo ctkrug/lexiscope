@@ -194,3 +194,28 @@ header p {
 #visualizations svg text.metric-value {
   fill: #fff;
 }
+
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #settings {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  #settings input[type='text'] {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #visualizations {
+    grid-template-columns: 1fr;
+  }
+}
