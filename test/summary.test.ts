@@ -38,4 +38,19 @@ describe('buildSummaryText', () => {
 
     expect(summary).toContain('Top words: none');
   });
+
+  it('caps the top-words list at five entries even with more ranked words', () => {
+    const frequency = ['one', 'two', 'three', 'four', 'five', 'six', 'seven'].map((word, i) => ({
+      word,
+      count: 7 - i,
+    }));
+    const summary = buildSummaryText({
+      frequency,
+      sentiment: { score: 0, matchedWords: 0, label: 'neutral' },
+      readability: { sentenceCount: 1, wordCount: 7, syllableCount: 7, fleschReadingEase: 0, fleschKincaidGrade: 0 },
+    });
+
+    const topWordsLine = summary.split('\n').find((line) => line.startsWith('Top words:'));
+    expect(topWordsLine).toBe('Top words: one (7), two (6), three (5), four (4), five (3)');
+  });
 });
