@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lexiscope</title>
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <main id="app">
+      <header>
+        <h1>Lexiscope</h1>
+        <p>Paste or type text below. Everything updates live, entirely in your browser.</p>
+      </header>
+      <textarea
+        id="input"
+        placeholder="Paste some text to see it analyzed..."
+        spellcheck="false"
+      ></textarea>
+      <section id="visualizations">
+        <div class="panel">
+          <h2>Word frequency</h2>
+          <svg id="frequency-chart"></svg>
+        </div>
+        <div class="panel">
+          <h2>Sentiment</h2>
+          <svg id="sentiment-gauge"></svg>
+        </div>
+        <div class="panel">
+          <h2>Readability</h2>
+          <svg id="readability-panel"></svg>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
