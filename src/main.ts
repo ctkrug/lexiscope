@@ -18,6 +18,23 @@ const frequencySvg = document.querySelector<SVGSVGElement>('#frequency-chart');
 const sentimentSvg = document.querySelector<SVGSVGElement>('#sentiment-gauge');
 const readabilitySvg = document.querySelector<SVGSVGElement>('#readability-panel');
 const statsStripEl = document.querySelector<HTMLElement>('#stats-strip');
+const fileInput = document.querySelector<HTMLInputElement>('#file-input');
+
+/** Reads a File's contents as text via the FileReader API. */
+function readFileAsText(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ''));
+    reader.onerror = () => reject(reader.error);
+    reader.readAsText(file);
+  });
+}
+
+async function loadFileIntoInput(file: File): Promise<void> {
+  if (!input) return;
+  input.value = await readFileAsText(file);
+  render(input.value);
+}
 
 /** Merges the built-in stopword list with the comma-separated custom entries. */
 function activeStopwords(): Set<string> {
@@ -68,6 +85,23 @@ if (input) {
     const debouncedResize = debounce(render, DEBOUNCE_MS);
     new ResizeObserver(() => debouncedResize(input.value)).observe(frequencySvg.parentElement ?? frequencySvg);
   }
+
+  fileInput?.addEventListener('change', () => {
+    const file = fileInput.files?.[0];
+    if (file) void loadFileIntoInput(file);
+  });
+
+  input.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    input.classList.add('drag-over');
+  });
+  input.addEventListener('dragleave', () => input.classList.remove('drag-over'));
+  input.addEventListener('drop', (event) => {
+    event.preventDefault();
+    input.classList.remove('drag-over');
+    const file = event.dataTransfer?.files?.[0];
+    if (file) void loadFileIntoInput(file);
+  });
 
   const sample =
     'Lexiscope is a wonderful little tool. It is not boring at all, ' +
