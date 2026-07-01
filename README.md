@@ -20,19 +20,32 @@ doing useful, real-time text analysis with nothing but the browser and a
 handful of well-chosen heuristics — and making the *visualization* of that
 analysis feel alive rather than static.
 
-## Planned features
+## Features
 
 - **Live word-frequency chart** — an animated, sorted bar chart of the most
-  frequent non-stopword tokens, re-laying-out as ranks change.
+  frequent non-stopword tokens, re-laying-out as ranks change, with hover
+  tooltips showing exact count and share of total words. The word limit and
+  extra stopwords are configurable from the UI.
 - **Sentiment gauge** — a lexicon-based polarity score (positive / negative /
-  neutral) rendered as a continuously-updating needle gauge.
+  neutral) rendered as a continuously-updating needle gauge, with negation
+  ("not good") and intensifier ("very good") handling and a per-sentence
+  breakdown available from `analyzeSentimentBySentence`.
 - **Readability panel** — Flesch Reading Ease and Flesch-Kincaid Grade Level,
   computed from sentence/word/syllable counts, shown as a small multiple of
-  gauges.
-- **Debounced, non-blocking analysis** — recompute on input without janking
-  the textarea, even on longer pastes.
-- **Shareable snapshots** *(stretch)* — encode the current text into the URL
-  so an analysis can be linked or bookmarked.
+  meters color-coded by easy/medium/hard band.
+- **Stats strip** — a compact word count, sentence count, and estimated
+  reading time summary above the visualizations.
+- **Debounced, non-blocking analysis** — recompute ~120ms after typing stops,
+  with a pending indicator while a large paste or fast typing is queued.
+- **File input** — load a `.txt` file by picking or dropping it onto the
+  textarea, in addition to pasting.
+- **Dark mode** — a toggle in the header, persisted across reloads.
+- **Shareable URLs** — the current text is encoded into a `?text=` query
+  param so an analysis can be linked or bookmarked.
+- **Copy analysis summary** — copies a plain-text digest of the current
+  scores to the clipboard.
+- **Mobile-responsive layout** — panels and controls stack into a single
+  column below 600px.
 
 ## Stack
 
@@ -52,10 +65,19 @@ npm run build     # production build -> dist/
 npm test          # run the analysis test suite
 ```
 
+## Deployment
+
+The Vite build (`npm run build`) emits a single static `dist/` with a
+relative base path (`base: './'` in `vite.config.ts`), so every asset is
+referenced as `./assets/...` rather than `/assets/...`. That means the same
+build works whether it's served from a domain root or a subpath such as
+`apps.charliekrug.com/lexiscope/` — copy `dist/` into the target directory
+and serve it as-is, no rewriting required.
+
 ## Status
 
-Early scaffold — see [`docs/VISION.md`](docs/VISION.md) for the design and
-[`docs/BACKLOG.md`](docs/BACKLOG.md) for the build plan.
+Core feature set implemented — see [`docs/VISION.md`](docs/VISION.md) for
+the design and [`docs/BACKLOG.md`](docs/BACKLOG.md) for the build plan.
 
 ## License
 
