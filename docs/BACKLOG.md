@@ -17,13 +17,13 @@ commits.
 
 ## Epic 2: Visualizations & interactivity
 
-- [ ] Add hover tooltips to frequency bars showing exact count and
+- [x] Add hover tooltips to frequency bars showing exact count and
       percentage of total words.
-- [ ] Color-code the readability meters by band (easy/medium/hard) instead
+- [x] Color-code the readability meters by band (easy/medium/hard) instead
       of a single flat fill color.
-- [ ] Add a compact summary stat strip (word count, sentence count, reading
+- [x] Add a compact summary stat strip (word count, sentence count, reading
       time estimate) above the visualization panels.
-- [ ] Make the frequency chart responsive to container resizing, not just
+- [x] Make the frequency chart responsive to container resizing, not just
       initial `clientWidth`.
 
 ## Epic 3: Input & performance
