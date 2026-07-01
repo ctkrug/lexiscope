@@ -1,5 +1,7 @@
 # Lexiscope
 
+[![CI](https://github.com/ctkrug/lexiscope/actions/workflows/ci.yml/badge.svg)](https://github.com/ctkrug/lexiscope/actions/workflows/ci.yml)
+
 Paste text. Watch it think.
 
 Lexiscope is a zero-backend web app that analyzes whatever you type or paste
@@ -28,8 +30,10 @@ analysis feel alive rather than static.
   extra stopwords are configurable from the UI.
 - **Sentiment gauge** — a lexicon-based polarity score (positive / negative /
   neutral) rendered as a continuously-updating needle gauge, with negation
-  ("not good") and intensifier ("very good") handling and a per-sentence
-  breakdown available from `analyzeSentimentBySentence`.
+  ("not good") and intensifier ("very good") handling.
+- **Sentiment-by-sentence strip** — one colored segment per sentence (opacity
+  scaled by confidence) so a paragraph's tone shifts are visible at a glance,
+  not just its aggregate score.
 - **Readability panel** — Flesch Reading Ease and Flesch-Kincaid Grade Level,
   computed from sentence/word/syllable counts, shown as a small multiple of
   meters color-coded by easy/medium/hard band.
