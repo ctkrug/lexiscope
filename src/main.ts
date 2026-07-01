@@ -8,6 +8,7 @@ import { renderSentimentGauge } from './viz/sentimentGauge';
 import { renderReadabilityPanel } from './viz/readabilityPanel';
 import { renderStatsStrip } from './viz/statsStrip';
 import { oppositeTheme, resolveInitialTheme, type Theme } from './theme';
+import { decodeTextFromQuery, encodeTextToQuery } from './urlState';
 
 const DEBOUNCE_MS = 120;
 const DEFAULT_WORD_LIMIT = 15;
@@ -71,8 +72,15 @@ function activeWordLimit(): number {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_WORD_LIMIT;
 }
 
+/** Reflects the current text into the URL so the analysis can be linked or bookmarked. */
+function syncUrl(text: string): void {
+  const query = encodeTextToQuery(text);
+  history.replaceState(null, '', `${location.pathname}${query}`);
+}
+
 function render(text: string): void {
   if (pendingIndicator) pendingIndicator.hidden = true;
+  syncUrl(text);
 
   if (frequencySvg) {
     const frequency = wordFrequency(text, { limit: activeWordLimit(), stopwords: activeStopwords() });
@@ -132,6 +140,6 @@ if (input) {
   const sample =
     'Lexiscope is a wonderful little tool. It is not boring at all, ' +
     'and the visualizations feel genuinely alive as you type.';
-  input.value = sample;
-  render(sample);
+  input.value = decodeTextFromQuery(location.search) ?? sample;
+  render(input.value);
 }
