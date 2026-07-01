@@ -12,7 +12,36 @@ describe('tokenizeWords', () => {
   });
 
   it('returns an empty array for text with no words', () => {
-    expect(tokenizeWords('   123 --- ')).toEqual([]);
+    expect(tokenizeWords('   --- ...  ')).toEqual([]);
+  });
+
+  it('treats digit runs as tokens', () => {
+    expect(tokenizeWords('There are 42 cats and 7 dogs.')).toEqual([
+      'there',
+      'are',
+      '42',
+      'cats',
+      'and',
+      '7',
+      'dogs',
+    ]);
+  });
+
+  it('keeps hyphenated compounds as a single token', () => {
+    expect(tokenizeWords('a state-of-the-art design')).toEqual([
+      'a',
+      'state-of-the-art',
+      'design',
+    ]);
+  });
+
+  it('matches unicode letters such as accents and non-Latin scripts', () => {
+    expect(tokenizeWords('café résumé naïve')).toEqual(['café', 'résumé', 'naïve']);
+    expect(tokenizeWords('こんにちは 世界')).toEqual(['こんにちは', '世界']);
+  });
+
+  it('does not include leading or trailing punctuation in a token', () => {
+    expect(tokenizeWords('"quoted"—dash, (parens)')).toEqual(['quoted', 'dash', 'parens']);
   });
 });
 
