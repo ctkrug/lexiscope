@@ -19,6 +19,7 @@ const sentimentSvg = document.querySelector<SVGSVGElement>('#sentiment-gauge');
 const readabilitySvg = document.querySelector<SVGSVGElement>('#readability-panel');
 const statsStripEl = document.querySelector<HTMLElement>('#stats-strip');
 const fileInput = document.querySelector<HTMLInputElement>('#file-input');
+const pendingIndicator = document.querySelector<HTMLElement>('#pending-indicator');
 
 /** Reads a File's contents as text via the FileReader API. */
 function readFileAsText(file: File): Promise<string> {
@@ -51,6 +52,8 @@ function activeWordLimit(): number {
 }
 
 function render(text: string): void {
+  if (pendingIndicator) pendingIndicator.hidden = true;
+
   if (frequencySvg) {
     const frequency = wordFrequency(text, { limit: activeWordLimit(), stopwords: activeStopwords() });
     renderFrequencyChart(frequencySvg, frequency, tokenizeWords(text).length);
@@ -77,7 +80,10 @@ function debounce(fn: (text: string) => void, delay: number): (text: string) => 
 
 if (input) {
   const debouncedRender = debounce(render, DEBOUNCE_MS);
-  input.addEventListener('input', () => debouncedRender(input.value));
+  input.addEventListener('input', () => {
+    if (pendingIndicator) pendingIndicator.hidden = false;
+    debouncedRender(input.value);
+  });
   wordLimitInput?.addEventListener('input', () => render(input.value));
   extraStopwordsInput?.addEventListener('input', () => render(input.value));
 
