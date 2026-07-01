@@ -33,4 +33,30 @@ describe('renderReadabilityPanel', () => {
     });
     expect(fills(svg)).toEqual(['#e6553f', '#e6553f']);
   });
+
+  it('colors a mid-range result amber on both meters', () => {
+    const svg = makeSvg();
+    renderReadabilityPanel(svg, {
+      sentenceCount: 2,
+      wordCount: 20,
+      syllableCount: 30,
+      fleschReadingEase: 50,
+      fleschKincaidGrade: 9,
+    });
+    expect(fills(svg)).toEqual(['#e0a83e', '#e0a83e']);
+  });
+
+  it('clamps out-of-domain values instead of throwing', () => {
+    const svg = makeSvg();
+    expect(() =>
+      renderReadabilityPanel(svg, {
+        sentenceCount: 1,
+        wordCount: 5,
+        syllableCount: 5,
+        fleschReadingEase: -40,
+        fleschKincaidGrade: 25,
+      }),
+    ).not.toThrow();
+    expect(fills(svg)).toEqual(['#e6553f', '#e6553f']);
+  });
 });
