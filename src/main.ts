@@ -127,16 +127,25 @@ function debounce(fn: (text: string) => void, delay: number): (text: string) => 
   };
 }
 
+/** Flashes the button's label, then restores it after a short delay. */
+function flashCopyButtonLabel(label: string): void {
+  if (!copySummaryButton) return;
+  const original = copySummaryButton.dataset.originalLabel ?? copySummaryButton.textContent ?? '';
+  copySummaryButton.dataset.originalLabel = original;
+  copySummaryButton.textContent = label;
+  setTimeout(() => {
+    if (copySummaryButton) copySummaryButton.textContent = original;
+  }, 1500);
+}
+
 copySummaryButton?.addEventListener('click', () => {
   const summary = buildSummaryText({ frequency: lastFrequency, sentiment: lastSentiment, readability: lastReadability });
-  navigator.clipboard.writeText(summary).then(() => {
-    if (!copySummaryButton) return;
-    const original = copySummaryButton.textContent;
-    copySummaryButton.textContent = 'Copied!';
-    setTimeout(() => {
-      copySummaryButton.textContent = original;
-    }, 1500);
-  });
+  Promise.resolve()
+    .then(() => navigator.clipboard.writeText(summary))
+    .then(
+      () => flashCopyButtonLabel('Copied!'),
+      () => flashCopyButtonLabel('Copy failed'),
+    );
 });
 
 if (input) {
