@@ -1,19 +1,40 @@
 import { wordFrequency } from './analysis/frequency';
 import { analyzeSentiment } from './analysis/sentiment';
 import { analyzeReadability } from './analysis/readability';
+import { STOPWORDS } from './analysis/stopwords';
 import { renderFrequencyChart } from './viz/frequencyChart';
 import { renderSentimentGauge } from './viz/sentimentGauge';
 import { renderReadabilityPanel } from './viz/readabilityPanel';
 
 const DEBOUNCE_MS = 120;
+const DEFAULT_WORD_LIMIT = 15;
 
 const input = document.querySelector<HTMLTextAreaElement>('#input');
+const wordLimitInput = document.querySelector<HTMLInputElement>('#word-limit');
+const extraStopwordsInput = document.querySelector<HTMLInputElement>('#extra-stopwords');
 const frequencySvg = document.querySelector<SVGSVGElement>('#frequency-chart');
 const sentimentSvg = document.querySelector<SVGSVGElement>('#sentiment-gauge');
 const readabilitySvg = document.querySelector<SVGSVGElement>('#readability-panel');
 
+/** Merges the built-in stopword list with the comma-separated custom entries. */
+function activeStopwords(): Set<string> {
+  const extra = (extraStopwordsInput?.value ?? '')
+    .split(',')
+    .map((w) => w.trim().toLowerCase())
+    .filter((w) => w.length > 0);
+  return extra.length > 0 ? new Set([...STOPWORDS, ...extra]) : STOPWORDS;
+}
+
+function activeWordLimit(): number {
+  const parsed = Number(wordLimitInput?.value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_WORD_LIMIT;
+}
+
 function render(text: string): void {
-  if (frequencySvg) renderFrequencyChart(frequencySvg, wordFrequency(text));
+  if (frequencySvg) {
+    const frequency = wordFrequency(text, { limit: activeWordLimit(), stopwords: activeStopwords() });
+    renderFrequencyChart(frequencySvg, frequency);
+  }
   if (sentimentSvg) renderSentimentGauge(sentimentSvg, analyzeSentiment(text));
   if (readabilitySvg) renderReadabilityPanel(readabilitySvg, analyzeReadability(text));
 }
@@ -29,6 +50,8 @@ function debounce(fn: (text: string) => void, delay: number): (text: string) => 
 if (input) {
   const debouncedRender = debounce(render, DEBOUNCE_MS);
   input.addEventListener('input', () => debouncedRender(input.value));
+  wordLimitInput?.addEventListener('input', () => render(input.value));
+  extraStopwordsInput?.addEventListener('input', () => render(input.value));
 
   const sample =
     'Lexiscope is a wonderful little tool. It is not boring at all, ' +
