@@ -99,9 +99,9 @@ function syncUrl(text: string): void {
   history.replaceState(null, '', `${location.pathname}${query}`);
 }
 
-function render(text: string): void {
+/** Runs the analysis + viz pipeline; does not touch the URL (see {@link render}). */
+function renderAnalysis(text: string): void {
   if (pendingIndicator) pendingIndicator.hidden = true;
-  syncUrl(text);
 
   const frequency = wordFrequency(text, { limit: activeWordLimit(), stopwords: activeStopwords() });
   lastFrequency = frequency;
@@ -121,6 +121,12 @@ function render(text: string): void {
       sentenceCount: readability.sentenceCount,
     });
   }
+}
+
+/** Runs the analysis pipeline and reflects the text into the URL for sharing. */
+function render(text: string): void {
+  renderAnalysis(text);
+  syncUrl(text);
 }
 
 function debounce(fn: (text: string) => void, delay: number): (text: string) => void {
@@ -189,5 +195,7 @@ if (input) {
     'Lexiscope is a wonderful little tool. It is not boring at all, ' +
     'and the visualizations feel genuinely alive as you type.';
   input.value = decodeTextFromQuery(location.search) ?? sample;
-  render(input.value);
+  // Analyze without syncing the URL: a shared link's URL already matches,
+  // and the placeholder sample shouldn't overwrite a clean root URL.
+  renderAnalysis(input.value);
 }
