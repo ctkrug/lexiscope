@@ -47,7 +47,9 @@ let lastReadability: ReadabilityResult = {
 
 function applyTheme(theme: Theme): void {
   document.documentElement.dataset.theme = theme;
-  if (themeToggle) themeToggle.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+  // "Night"/"Paper" name the two looks from docs/DESIGN.md (paper-and-ink);
+  // the button always shows the theme you would switch TO.
+  if (themeToggle) themeToggle.textContent = theme === 'dark' ? 'Paper' : 'Night';
 }
 
 if (themeToggle) {
