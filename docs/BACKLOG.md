@@ -41,7 +41,7 @@ commits.
 - [ ] Verify and document the subpath deployment flow for
       `apps.charliekrug.com/lexiscope` (confirm relative asset resolution
       end-to-end, not just in local preview).
-- [ ] Add URL-based sharing: encode the current text into a query param so
+- [x] Add URL-based sharing: encode the current text into a query param so
       an analysis can be linked or bookmarked.
-- [ ] Add a "copy analysis summary" button that copies a plain-text digest
+- [x] Add a "copy analysis summary" button that copies a plain-text digest
       of the current scores to the clipboard.
