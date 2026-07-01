@@ -46,4 +46,12 @@ describe('renderSentenceSentimentStrip', () => {
     expect(() => renderSentenceSentimentStrip(svg, [])).not.toThrow();
     expect(svg.querySelectorAll('rect.segment')).toHaveLength(0);
   });
+
+  it('clamps opacity at full confidence for an out-of-range score', () => {
+    const svg = makeSvg();
+    renderSentenceSentimentStrip(svg, [{ sentence: 'Extremely amazing!', score: 8, matchedWords: 1, label: 'positive' }]);
+
+    const segment = svg.querySelector('rect.segment');
+    expect(segment?.getAttribute('fill-opacity')).toBe('1');
+  });
 });
