@@ -21,7 +21,8 @@ function metricsFor(result: ReadabilityResult): Metric[] {
   ];
 }
 
-const BAND_COLORS = { easy: '#3fb56f', medium: '#e0a83e', hard: '#e6553f' } as const;
+// Same paper-and-ink family as SENTIMENT_COLORS (docs/DESIGN.md).
+const BAND_COLORS = { easy: '#4f9257', medium: '#d9a13f', hard: '#c14e3d' } as const;
 
 /** Colors a meter fill by how "easy" its value reads within its domain. */
 function bandColor(metric: Metric): string {
@@ -50,7 +51,7 @@ export function renderReadabilityPanel(svg: SVGSVGElement, result: ReadabilityRe
     .attr('transform', (_d, i) => `translate(0, ${i * ROW_GAP})`);
 
   entered.append('text').attr('class', 'metric-label').attr('y', 12).attr('font-size', '0.8rem');
-  entered.append('rect').attr('class', 'metric-track').attr('y', 16).attr('height', BAR_HEIGHT).attr('width', WIDTH).attr('fill', '#e3e6ea');
+  entered.append('rect').attr('class', 'metric-track').attr('y', 16).attr('height', BAR_HEIGHT).attr('width', WIDTH).attr('fill', 'var(--viz-track, #eae1cf)');
   entered.append('rect').attr('class', 'metric-fill').attr('y', 16).attr('height', BAR_HEIGHT);
   entered.append('text').attr('class', 'metric-value').attr('y', 16 + BAR_HEIGHT - 4).attr('x', 6).attr('font-size', '0.75rem').attr('fill', '#fff');
 

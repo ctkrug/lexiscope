@@ -20,7 +20,7 @@ export function renderSentimentGauge(svg: SVGSVGElement, result: SentimentResult
 
   let track = selection.select<SVGPathElement>('path.track');
   if (track.empty()) {
-    track = selection.append('path').attr('class', 'track').attr('transform', center).attr('fill', '#e3e6ea');
+    track = selection.append('path').attr('class', 'track').attr('transform', center).attr('fill', 'var(--viz-track, #eae1cf)');
     track.attr('d', arcGenerator(1));
   }
 

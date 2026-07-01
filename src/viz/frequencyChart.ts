@@ -4,9 +4,18 @@ import type { WordCount } from '../analysis/frequency';
 const BAR_HEIGHT = 22;
 const NARROW_WIDTH = 300;
 
+// Bars are ink-blue; the single most frequent word gets the editor's red pen
+// (docs/DESIGN.md, "The red pen") - the tool circles the word you lean on
+// hardest. CSS variables keep both colors in step with the paper/night theme;
+// the fallbacks are the paper values for environments without the stylesheet.
+const BAR_FILL = 'var(--viz-bar, #33538c)';
+const TOP_BAR_FILL = 'var(--viz-bar-top, #b0402f)';
+
 /** Shrinks the label margin on narrow containers so bars keep usable width. */
 function marginFor(width: number) {
-  return { top: 8, right: 16, bottom: 8, left: width < NARROW_WIDTH ? 56 : 90 };
+  // The wide-layout margin fits "visualizations (12)"-length labels; the old
+  // 90px clipped them to "…izations (1)".
+  return { top: 8, right: 16, bottom: 8, left: width < NARROW_WIDTH ? 56 : 108 };
 }
 
 /** Formats a tooltip string with the exact count and share of total words. */
@@ -56,12 +65,15 @@ export function renderFrequencyChart(svg: SVGSVGElement, data: WordCount[], tota
     .append('rect')
     .attr('x', 0)
     .attr('height', y.bandwidth())
-    .attr('fill', '#4f8ef7')
     .attr('y', (d) => y(d.word) ?? 0)
     .attr('width', 0);
   barsEnter.append('title');
 
   const barsMerged = barsEnter.merge(bars);
+  // Applied on every update, not just enter: the top word changes as you type,
+  // and the red pen has to follow it.
+  const topWord = data[0]?.word;
+  barsMerged.attr('fill', (d) => (d.word === topWord ? TOP_BAR_FILL : BAR_FILL));
   barsMerged.select<SVGTitleElement>('title').text((d) => tooltipText(d, totalWords));
 
   barsMerged
