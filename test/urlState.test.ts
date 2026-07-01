@@ -38,4 +38,8 @@ describe('decodeTextFromQuery', () => {
   it('ignores other params alongside text', () => {
     expect(decodeTextFromQuery('?foo=bar&text=hi&baz=1')).toBe('hi');
   });
+
+  it('treats a literal + as a space, per query-string convention', () => {
+    expect(decodeTextFromQuery('?text=hello+world')).toBe('hello world');
+  });
 });
