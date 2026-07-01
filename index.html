@@ -14,9 +14,13 @@
       </header>
       <textarea
         id="input"
-        placeholder="Paste some text to see it analyzed..."
+        placeholder="Paste some text to see it analyzed, or drop a .txt file here..."
         spellcheck="false"
       ></textarea>
+      <div id="file-controls">
+        <label id="file-drop-label" for="file-input">Load a .txt file&hellip;</label>
+        <input type="file" id="file-input" accept=".txt,text/plain" />
+      </div>
       <section id="settings">
         <label for="word-limit">
           Words shown
