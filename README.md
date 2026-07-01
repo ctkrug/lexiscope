@@ -17,6 +17,8 @@ account. The whole analysis pipeline runs client-side in TypeScript, and the
 visualizations are D3 data joins, so bars re-rank and the sentiment needle
 sweeps as the underlying scores shift.
 
+![Lexiscope on its paper theme: the manuscript editor, live stats, and the word-frequency chart with the most-used word circled in editor red](docs/screenshot.png)
+
 ## What you can do with it
 
 - **Watch the frequency chart re-rank as you write.** A sorted, animated bar
@@ -27,6 +29,10 @@ sweeps as the underlying scores shift.
   scores overall tone (with negation and intensifier handling, so "not good"
   and "very good" both land right), and a per-sentence strip colors each
   sentence so you can spot where the tone dips or lifts.
+- **Reads like a page, not a dashboard.** A paper-and-ink design (Fraunces
+  headings, a serif manuscript editor, warm paper background) with a one-click
+  night mode, and the single most frequent word drawn in editor's red so your
+  crutch word is impossible to miss.
 - **Check readability at a glance.** Flesch Reading Ease and Flesch-Kincaid
   Grade Level, shown as meters color-coded easy / medium / hard, plus a strip
   with word count, sentence count, and estimated reading time.
