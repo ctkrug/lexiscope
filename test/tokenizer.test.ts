@@ -61,4 +61,12 @@ describe('tokenizeSentences', () => {
   it('ignores trailing whitespace and empty fragments', () => {
     expect(tokenizeSentences('Only one sentence   ')).toEqual(['Only one sentence']);
   });
+
+  it('includes a final sentence with no trailing terminator', () => {
+    expect(tokenizeSentences('First one. Second one')).toEqual(['First one', 'Second one']);
+  });
+
+  it('returns an empty array for empty text', () => {
+    expect(tokenizeSentences('')).toEqual([]);
+  });
 });
