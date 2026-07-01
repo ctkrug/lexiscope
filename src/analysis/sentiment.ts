@@ -1,5 +1,5 @@
 import { tokenizeWords } from './tokenizer';
-import { NEGATORS, SENTIMENT_LEXICON } from './sentimentLexicon';
+import { INTENSIFIERS, NEGATORS, SENTIMENT_LEXICON } from './sentimentLexicon';
 
 export interface SentimentResult {
   /** Average per-word polarity, roughly in [-5, 5]. 0 for neutral/empty text. */
@@ -13,13 +13,16 @@ const NEUTRAL_BAND = 0.15;
 
 /**
  * Scores text polarity by averaging lexicon hits, flipping the sign of any
- * word immediately preceded by a negator ("not good" -> negative).
+ * word immediately preceded by a negator ("not good" -> negative) and
+ * scaling it by any immediately preceding intensifier ("very good" scores
+ * higher than a bare "good").
  */
 export function analyzeSentiment(text: string): SentimentResult {
   const words = tokenizeWords(text);
   let total = 0;
   let matchedWords = 0;
   let negate = false;
+  let intensity = 1;
 
   for (const word of words) {
     if (NEGATORS.has(word)) {
@@ -27,12 +30,19 @@ export function analyzeSentiment(text: string): SentimentResult {
       continue;
     }
 
+    if (word in INTENSIFIERS) {
+      intensity = INTENSIFIERS[word];
+      continue;
+    }
+
     const polarity = SENTIMENT_LEXICON[word];
     if (polarity !== undefined) {
-      total += negate ? -polarity : polarity;
+      const scaled = polarity * intensity;
+      total += negate ? -scaled : scaled;
       matchedWords += 1;
     }
     negate = false;
+    intensity = 1;
   }
 
   const score = matchedWords > 0 ? total / matchedWords : 0;
