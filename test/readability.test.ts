@@ -13,6 +13,7 @@ describe('countSyllables', () => {
 
   it('never returns fewer than one syllable', () => {
     expect(countSyllables('the')).toBeGreaterThanOrEqual(1);
+    expect(countSyllables('psst')).toBe(1);
   });
 });
 
@@ -39,5 +40,15 @@ describe('analyzeReadability', () => {
     const result = analyzeReadability('One two three. Four five.');
     expect(result.sentenceCount).toBe(2);
     expect(result.wordCount).toBe(5);
+  });
+
+  it('returns zeroed metrics for text with no tokenizable words', () => {
+    expect(analyzeReadability('!!! ??? ---')).toEqual({
+      sentenceCount: 0,
+      wordCount: 0,
+      syllableCount: 0,
+      fleschReadingEase: 0,
+      fleschKincaidGrade: 0,
+    });
   });
 });
