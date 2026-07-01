@@ -9,4 +9,15 @@ describe('STOPWORDS', () => {
     }
   });
 
+  it('contains common function words', () => {
+    for (const word of ['the', 'a', 'is', 'and', 'of', 'to']) {
+      expect(STOPWORDS.has(word)).toBe(true);
+    }
+  });
+
+  it('does not contain common content words', () => {
+    for (const word of ['amazing', 'terrible', 'cat', 'lexiscope']) {
+      expect(STOPWORDS.has(word)).toBe(false);
+    }
+  });
 });
