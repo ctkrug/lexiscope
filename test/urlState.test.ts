@@ -29,4 +29,13 @@ describe('decodeTextFromQuery', () => {
   it('returns null for an empty text param', () => {
     expect(decodeTextFromQuery('?text=')).toBeNull();
   });
+
+  it('round-trips unicode text, including newlines and emoji', () => {
+    const text = 'café résumé\nこんにちは 🎉';
+    expect(decodeTextFromQuery(encodeTextToQuery(text))).toBe(text);
+  });
+
+  it('ignores other params alongside text', () => {
+    expect(decodeTextFromQuery('?foo=bar&text=hi&baz=1')).toBe('hi');
+  });
 });
