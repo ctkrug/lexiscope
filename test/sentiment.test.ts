@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { analyzeSentiment } from '../src/analysis/sentiment';
+import { analyzeSentiment, analyzeSentimentBySentence } from '../src/analysis/sentiment';
 
 describe('analyzeSentiment', () => {
   it('scores clearly positive text as positive', () => {
@@ -40,5 +40,20 @@ describe('analyzeSentiment', () => {
   it('combines negation and intensification', () => {
     const result = analyzeSentiment('not very good');
     expect(result.score).toBeLessThan(analyzeSentiment('not good').score);
+  });
+});
+
+describe('analyzeSentimentBySentence', () => {
+  it('scores each sentence independently', () => {
+    const results = analyzeSentimentBySentence('This is wonderful. This is terrible.');
+    expect(results).toHaveLength(2);
+    expect(results[0].sentence).toBe('This is wonderful');
+    expect(results[0].label).toBe('positive');
+    expect(results[1].sentence).toBe('This is terrible');
+    expect(results[1].label).toBe('negative');
+  });
+
+  it('returns an empty array for empty text', () => {
+    expect(analyzeSentimentBySentence('')).toEqual([]);
   });
 });
