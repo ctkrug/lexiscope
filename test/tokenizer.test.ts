@@ -43,6 +43,14 @@ describe('tokenizeWords', () => {
   it('does not include leading or trailing punctuation in a token', () => {
     expect(tokenizeWords('"quoted"—dash, (parens)')).toEqual(['quoted', 'dash', 'parens']);
   });
+
+  it('returns an empty array for emoji-only text', () => {
+    expect(tokenizeWords('🎉🎉🎉')).toEqual([]);
+  });
+
+  it('lowercases mixed-case input', () => {
+    expect(tokenizeWords('AMAZING Day')).toEqual(['amazing', 'day']);
+  });
 });
 
 describe('tokenizeSentences', () => {
