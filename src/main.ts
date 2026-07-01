@@ -148,9 +148,11 @@ if (input) {
   wordLimitInput?.addEventListener('input', () => render(input.value));
   extraStopwordsInput?.addEventListener('input', () => render(input.value));
 
-  if (frequencySvg && typeof ResizeObserver !== 'undefined') {
+  if (typeof ResizeObserver !== 'undefined') {
     const debouncedResize = debounce(render, DEBOUNCE_MS);
-    new ResizeObserver(() => debouncedResize(input.value)).observe(frequencySvg.parentElement ?? frequencySvg);
+    const resizeObserver = new ResizeObserver(() => debouncedResize(input.value));
+    if (frequencySvg) resizeObserver.observe(frequencySvg.parentElement ?? frequencySvg);
+    if (sentenceSentimentSvg) resizeObserver.observe(sentenceSentimentSvg.parentElement ?? sentenceSentimentSvg);
   }
 
   fileInput?.addEventListener('change', () => {
