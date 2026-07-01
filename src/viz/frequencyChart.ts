@@ -4,11 +4,19 @@ import type { WordCount } from '../analysis/frequency';
 const MARGIN = { top: 8, right: 16, bottom: 8, left: 90 };
 const BAR_HEIGHT = 22;
 
+/** Formats a tooltip string with the exact count and share of total words. */
+function tooltipText(d: WordCount, totalWords: number): string {
+  const pct = totalWords > 0 ? ((d.count / totalWords) * 100).toFixed(1) : '0.0';
+  return `${d.word}: ${d.count} (${pct}% of ${totalWords} words)`;
+}
+
 /**
  * Renders a horizontal bar chart of word counts, keyed by word so D3's
  * enter/update/exit joins animate bars into their new rank as text changes.
+ * `totalWords` (all tokenized words, including stopwords) powers the
+ * hover tooltip's percentage-of-total figure.
  */
-export function renderFrequencyChart(svg: SVGSVGElement, data: WordCount[]): void {
+export function renderFrequencyChart(svg: SVGSVGElement, data: WordCount[], totalWords = 0): void {
   const width = svg.clientWidth || 320;
   const height = Math.max(data.length, 1) * BAR_HEIGHT + MARGIN.top + MARGIN.bottom;
 
@@ -36,15 +44,20 @@ export function renderFrequencyChart(svg: SVGSVGElement, data: WordCount[]): voi
     .attr('width', 0)
     .remove();
 
-  bars
+  const barsEnter = bars
     .enter()
     .append('rect')
     .attr('x', 0)
     .attr('height', y.bandwidth())
     .attr('fill', '#4f8ef7')
     .attr('y', (d) => y(d.word) ?? 0)
-    .attr('width', 0)
-    .merge(bars)
+    .attr('width', 0);
+  barsEnter.append('title');
+
+  const barsMerged = barsEnter.merge(bars);
+  barsMerged.select<SVGTitleElement>('title').text((d) => tooltipText(d, totalWords));
+
+  barsMerged
     .transition()
     .duration(250)
     .attr('y', (d) => y(d.word) ?? 0)
