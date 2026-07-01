@@ -1,4 +1,4 @@
-import { tokenizeWords } from './tokenizer';
+import { tokenizeSentences, tokenizeWords } from './tokenizer';
 import { INTENSIFIERS, NEGATORS, SENTIMENT_LEXICON } from './sentimentLexicon';
 
 export interface SentimentResult {
@@ -53,4 +53,19 @@ function scoreWords(words: string[]): SentimentResult {
 /** Scores the polarity of an entire text, in the same style as {@link scoreWords}. */
 export function analyzeSentiment(text: string): SentimentResult {
   return scoreWords(tokenizeWords(text));
+}
+
+export interface SentenceSentiment extends SentimentResult {
+  sentence: string;
+}
+
+/**
+ * Scores each sentence independently so tone shifts within a paragraph
+ * are visible, rather than only an aggregate score for the whole text.
+ */
+export function analyzeSentimentBySentence(text: string): SentenceSentiment[] {
+  return tokenizeSentences(text).map((sentence) => ({
+    sentence,
+    ...scoreWords(tokenizeWords(sentence)),
+  }));
 }
