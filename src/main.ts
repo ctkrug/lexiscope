@@ -1,10 +1,11 @@
 import { wordFrequency } from './analysis/frequency';
-import { analyzeSentiment } from './analysis/sentiment';
+import { analyzeSentiment, analyzeSentimentBySentence } from './analysis/sentiment';
 import { analyzeReadability } from './analysis/readability';
 import { STOPWORDS } from './analysis/stopwords';
 import { tokenizeWords } from './analysis/tokenizer';
 import { renderFrequencyChart } from './viz/frequencyChart';
 import { renderSentimentGauge } from './viz/sentimentGauge';
+import { renderSentenceSentimentStrip } from './viz/sentenceSentimentStrip';
 import { renderReadabilityPanel } from './viz/readabilityPanel';
 import { renderStatsStrip } from './viz/statsStrip';
 import { oppositeTheme, resolveInitialTheme, type Theme } from './theme';
@@ -23,6 +24,7 @@ const wordLimitInput = document.querySelector<HTMLInputElement>('#word-limit');
 const extraStopwordsInput = document.querySelector<HTMLInputElement>('#extra-stopwords');
 const frequencySvg = document.querySelector<SVGSVGElement>('#frequency-chart');
 const sentimentSvg = document.querySelector<SVGSVGElement>('#sentiment-gauge');
+const sentenceSentimentSvg = document.querySelector<SVGSVGElement>('#sentence-sentiment-strip');
 const readabilitySvg = document.querySelector<SVGSVGElement>('#readability-panel');
 const statsStripEl = document.querySelector<HTMLElement>('#stats-strip');
 const fileInput = document.querySelector<HTMLInputElement>('#file-input');
@@ -104,6 +106,7 @@ function render(text: string): void {
   const sentiment = analyzeSentiment(text);
   lastSentiment = sentiment;
   if (sentimentSvg) renderSentimentGauge(sentimentSvg, sentiment);
+  if (sentenceSentimentSvg) renderSentenceSentimentStrip(sentenceSentimentSvg, analyzeSentimentBySentence(text));
 
   const readability = analyzeReadability(text);
   lastReadability = readability;
