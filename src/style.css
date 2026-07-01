@@ -91,6 +91,14 @@ header p {
   width: 16rem;
 }
 
+#pending-indicator {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: #8a93a0;
+  font-style: italic;
+}
+
 #stats-strip {
   display: flex;
   gap: 1.5rem;
