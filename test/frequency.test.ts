@@ -11,12 +11,20 @@ describe('wordFrequency', () => {
     ]);
   });
 
-  it('respects the limit parameter', () => {
-    const result = wordFrequency('alpha beta gamma delta', 2);
+  it('respects the limit option', () => {
+    const result = wordFrequency('alpha beta gamma delta', { limit: 2 });
     expect(result).toHaveLength(2);
   });
 
   it('returns an empty array for stopword-only text', () => {
     expect(wordFrequency('the a an of')).toEqual([]);
+  });
+
+  it('accepts a custom stopword set', () => {
+    const result = wordFrequency('alpha beta gamma', { stopwords: new Set(['alpha']) });
+    expect(result).toEqual([
+      { word: 'beta', count: 1 },
+      { word: 'gamma', count: 1 },
+    ]);
   });
 });
