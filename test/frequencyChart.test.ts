@@ -24,4 +24,19 @@ describe('renderFrequencyChart', () => {
     const title = svg.querySelector('rect title');
     expect(title?.textContent).toBe('cat: 1 (0.0% of 0 words)');
   });
+
+  it('shrinks the label margin on narrow containers', () => {
+    const wide = makeSvg();
+    Object.defineProperty(wide, 'clientWidth', { value: 400, configurable: true });
+    renderFrequencyChart(wide, [{ word: 'cat', count: 1 }]);
+    const wideTransform = wide.querySelector('g.bars')?.getAttribute('transform');
+
+    const narrow = makeSvg();
+    Object.defineProperty(narrow, 'clientWidth', { value: 200, configurable: true });
+    renderFrequencyChart(narrow, [{ word: 'cat', count: 1 }]);
+    const narrowTransform = narrow.querySelector('g.bars')?.getAttribute('transform');
+
+    expect(wideTransform).toBe('translate(90, 0)');
+    expect(narrowTransform).toBe('translate(56, 0)');
+  });
 });
