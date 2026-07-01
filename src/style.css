@@ -36,6 +36,37 @@ header p {
   resize: vertical;
 }
 
+#settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #55606b;
+}
+
+#settings label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+#settings input {
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #d3d8de;
+  border-radius: 4px;
+}
+
+#settings input[type='number'] {
+  width: 5rem;
+}
+
+#settings input[type='text'] {
+  width: 16rem;
+}
+
 #visualizations {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
