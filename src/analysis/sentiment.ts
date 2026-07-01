@@ -13,9 +13,11 @@ const NEUTRAL_BAND = 0.15;
 
 /**
  * Scores a pre-tokenized word list, flipping the sign of any word
- * immediately preceded by a negator ("not good" -> negative) and scaling
- * it by any immediately preceding intensifier ("very good" scores higher
- * than a bare "good").
+ * preceded by a negator ("not good" -> negative) and scaling it by any
+ * preceding intensifier ("very good" scores higher than a bare "good").
+ * A negator/intensifier carries forward through non-lexicon filler words
+ * ("not a bad restaurant") and only clears once it has actually applied
+ * to a scored word, so short articles and connectives don't break scope.
  */
 function scoreWords(words: string[]): SentimentResult {
   let total = 0;
@@ -39,9 +41,9 @@ function scoreWords(words: string[]): SentimentResult {
       const scaled = polarity * intensity;
       total += negate ? -scaled : scaled;
       matchedWords += 1;
+      negate = false;
+      intensity = 1;
     }
-    negate = false;
-    intensity = 1;
   }
 
   const score = matchedWords > 0 ? total / matchedWords : 0;

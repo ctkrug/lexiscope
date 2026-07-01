@@ -41,6 +41,11 @@ describe('analyzeSentiment', () => {
     const result = analyzeSentiment('not very good');
     expect(result.score).toBeLessThan(analyzeSentiment('not good').score);
   });
+
+  it('carries negation through a filler word before the scored word', () => {
+    const result = analyzeSentiment('not a bad restaurant');
+    expect(result.score).toBeGreaterThan(0);
+  });
 });
 
 describe('analyzeSentimentBySentence', () => {
