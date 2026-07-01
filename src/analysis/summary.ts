@@ -1,6 +1,6 @@
 import type { WordCount } from './frequency';
 import type { ReadabilityResult } from './readability';
-import type { SentimentResult } from './sentiment';
+import { formatScore, type SentimentResult } from './sentiment';
 
 export interface SummaryInput {
   frequency: WordCount[];
@@ -18,7 +18,7 @@ export function buildSummaryText({ frequency, sentiment, readability }: SummaryI
   const lines = [
     'Lexiscope analysis summary',
     `Words: ${readability.wordCount} | Sentences: ${readability.sentenceCount}`,
-    `Sentiment: ${sentiment.label} (${sentiment.score.toFixed(2)})`,
+    `Sentiment: ${sentiment.label} (${formatScore(sentiment.score)})`,
     `Readability: Flesch ease ${readability.fleschReadingEase.toFixed(1)}, grade level ${readability.fleschKincaidGrade.toFixed(1)}`,
     `Top words: ${topWords.length > 0 ? topWords : 'none'}`,
   ];

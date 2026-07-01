@@ -57,6 +57,15 @@ export function analyzeSentiment(text: string): SentimentResult {
   return scoreWords(tokenizeWords(text));
 }
 
+/**
+ * Formats a score to two decimals for display, avoiding the "-0.00"
+ * artifact `toFixed` produces for small negative values that round to zero.
+ */
+export function formatScore(score: number): string {
+  const fixed = score.toFixed(2);
+  return fixed === '-0.00' ? '0.00' : fixed;
+}
+
 export interface SentenceSentiment extends SentimentResult {
   sentence: string;
 }

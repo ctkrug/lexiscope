@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import type { SentenceSentiment } from '../analysis/sentiment';
+import { formatScore, type SentenceSentiment } from '../analysis/sentiment';
 import { SENTIMENT_COLORS } from './sentimentColors';
 
 const HEIGHT = 36;
@@ -9,7 +9,7 @@ const MAX_SCORE = 5;
 /** Truncates a sentence for the tooltip so a long paragraph doesn't produce a giant title. */
 function tooltipText(d: SentenceSentiment): string {
   const preview = d.sentence.length > 80 ? `${d.sentence.slice(0, 77)}...` : d.sentence;
-  return `${preview}\n${d.label} (${d.score.toFixed(2)})`;
+  return `${preview}\n${d.label} (${formatScore(d.score)})`;
 }
 
 /**

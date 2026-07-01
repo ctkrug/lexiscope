@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { analyzeSentiment, analyzeSentimentBySentence } from '../src/analysis/sentiment';
+import { analyzeSentiment, analyzeSentimentBySentence, formatScore } from '../src/analysis/sentiment';
 
 describe('analyzeSentiment', () => {
   it('scores clearly positive text as positive', () => {
@@ -75,5 +75,17 @@ describe('analyzeSentimentBySentence', () => {
   it('scores a neutral sentence among positive and negative ones', () => {
     const results = analyzeSentimentBySentence('This is wonderful. The cat sat down. This is terrible.');
     expect(results.map((r) => r.label)).toEqual(['positive', 'neutral', 'negative']);
+  });
+});
+
+describe('formatScore', () => {
+  it('formats an ordinary score to two decimals', () => {
+    expect(formatScore(1.234)).toBe('1.23');
+    expect(formatScore(-2.5)).toBe('-2.50');
+  });
+
+  it('normalizes a small negative score that rounds to zero', () => {
+    expect(formatScore(-0.001)).toBe('0.00');
+    expect(formatScore(-0)).toBe('0.00');
   });
 });

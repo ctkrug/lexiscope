@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import type { SentimentResult } from '../analysis/sentiment';
+import { formatScore, type SentimentResult } from '../analysis/sentiment';
 import { SENTIMENT_COLORS } from './sentimentColors';
 
 const WIDTH = 240;
@@ -53,5 +53,5 @@ export function renderSentimentGauge(svg: SVGSVGElement, result: SentimentResult
       .attr('text-anchor', 'middle')
       .attr('font-size', '1.1rem');
   }
-  label.text(`${result.label} (${result.score.toFixed(2)})`);
+  label.text(`${result.label} (${formatScore(result.score)})`);
 }

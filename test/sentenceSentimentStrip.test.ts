@@ -54,4 +54,12 @@ describe('renderSentenceSentimentStrip', () => {
     const segment = svg.querySelector('rect.segment');
     expect(segment?.getAttribute('fill-opacity')).toBe('1');
   });
+
+  it('never shows a near-zero negative score as "-0.00" in the tooltip', () => {
+    const svg = makeSvg();
+    renderSentenceSentimentStrip(svg, [{ sentence: 'Roughly neutral.', score: -0.001, matchedWords: 1, label: 'neutral' }]);
+
+    const title = svg.querySelector('rect.segment title');
+    expect(title?.textContent).toBe('Roughly neutral.\nneutral (0.00)');
+  });
 });

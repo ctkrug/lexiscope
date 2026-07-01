@@ -53,4 +53,14 @@ describe('buildSummaryText', () => {
     const topWordsLine = summary.split('\n').find((line) => line.startsWith('Top words:'));
     expect(topWordsLine).toBe('Top words: one (7), two (6), three (5), four (4), five (3)');
   });
+
+  it('never shows a near-zero negative score as "-0.00"', () => {
+    const summary = buildSummaryText({
+      frequency: [],
+      sentiment: { score: -0.001, matchedWords: 1, label: 'neutral' },
+      readability: { sentenceCount: 1, wordCount: 1, syllableCount: 1, fleschReadingEase: 0, fleschKincaidGrade: 0 },
+    });
+
+    expect(summary).toContain('Sentiment: neutral (0.00)');
+  });
 });

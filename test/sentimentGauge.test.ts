@@ -36,4 +36,10 @@ describe('renderSentimentGauge', () => {
     expect(() => renderSentimentGauge(svg, { score: 8, matchedWords: 1, label: 'positive' })).not.toThrow();
     expect(svg.querySelector('path.fill')?.getAttribute('data-fraction')).toBe('1');
   });
+
+  it('never labels a near-zero negative score as "-0.00"', () => {
+    const svg = makeSvg();
+    renderSentimentGauge(svg, { score: -0.001, matchedWords: 1, label: 'neutral' });
+    expect(svg.querySelector('text.label')?.textContent).toBe('neutral (0.00)');
+  });
 });
