@@ -17,6 +17,16 @@
         placeholder="Paste some text to see it analyzed..."
         spellcheck="false"
       ></textarea>
+      <section id="settings">
+        <label for="word-limit">
+          Words shown
+          <input type="number" id="word-limit" min="3" max="50" value="15" />
+        </label>
+        <label for="extra-stopwords">
+          Extra stopwords (comma-separated)
+          <input type="text" id="extra-stopwords" placeholder="e.g. lexiscope, said" />
+        </label>
+      </section>
       <section id="visualizations">
         <div class="panel">
           <h2>Word frequency</h2>
