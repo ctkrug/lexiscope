@@ -7,9 +7,11 @@ import { renderFrequencyChart } from './viz/frequencyChart';
 import { renderSentimentGauge } from './viz/sentimentGauge';
 import { renderReadabilityPanel } from './viz/readabilityPanel';
 import { renderStatsStrip } from './viz/statsStrip';
+import { oppositeTheme, resolveInitialTheme, type Theme } from './theme';
 
 const DEBOUNCE_MS = 120;
 const DEFAULT_WORD_LIMIT = 15;
+const THEME_STORAGE_KEY = 'lexiscope-theme';
 
 const input = document.querySelector<HTMLTextAreaElement>('#input');
 const wordLimitInput = document.querySelector<HTMLInputElement>('#word-limit');
@@ -20,6 +22,24 @@ const readabilitySvg = document.querySelector<SVGSVGElement>('#readability-panel
 const statsStripEl = document.querySelector<HTMLElement>('#stats-strip');
 const fileInput = document.querySelector<HTMLInputElement>('#file-input');
 const pendingIndicator = document.querySelector<HTMLElement>('#pending-indicator');
+const themeToggle = document.querySelector<HTMLButtonElement>('#theme-toggle');
+
+function applyTheme(theme: Theme): void {
+  document.documentElement.dataset.theme = theme;
+  if (themeToggle) themeToggle.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+}
+
+if (themeToggle) {
+  const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+  let theme = resolveInitialTheme(localStorage.getItem(THEME_STORAGE_KEY), prefersDark);
+  applyTheme(theme);
+
+  themeToggle.addEventListener('click', () => {
+    theme = oppositeTheme(theme);
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+    applyTheme(theme);
+  });
+}
 
 /** Reads a File's contents as text via the FileReader API. */
 function readFileAsText(file: File): Promise<string> {
