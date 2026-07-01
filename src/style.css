@@ -200,6 +200,11 @@ header p {
   color: var(--muted);
 }
 
+#sentence-sentiment-strip {
+  display: block;
+  width: 100%;
+}
+
 #visualizations svg text {
   fill: var(--text);
 }
