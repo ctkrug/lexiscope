@@ -27,4 +27,14 @@ describe('wordFrequency', () => {
       { word: 'gamma', count: 1 },
     ]);
   });
+
+  it('excludes single-character tokens even when not a stopword', () => {
+    const result = wordFrequency('x marks the spot, x again', { stopwords: new Set() });
+    expect(result.find((w) => w.word === 'x')).toBeUndefined();
+  });
+
+  it('breaks count ties alphabetically for stable ordering', () => {
+    const result = wordFrequency('zebra apple mango');
+    expect(result.map((w) => w.word)).toEqual(['apple', 'mango', 'zebra']);
+  });
 });
