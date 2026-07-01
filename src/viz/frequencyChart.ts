@@ -1,8 +1,13 @@
 import * as d3 from 'd3';
 import type { WordCount } from '../analysis/frequency';
 
-const MARGIN = { top: 8, right: 16, bottom: 8, left: 90 };
 const BAR_HEIGHT = 22;
+const NARROW_WIDTH = 300;
+
+/** Shrinks the label margin on narrow containers so bars keep usable width. */
+function marginFor(width: number) {
+  return { top: 8, right: 16, bottom: 8, left: width < NARROW_WIDTH ? 56 : 90 };
+}
 
 /** Formats a tooltip string with the exact count and share of total words. */
 function tooltipText(d: WordCount, totalWords: number): string {
@@ -18,6 +23,7 @@ function tooltipText(d: WordCount, totalWords: number): string {
  */
 export function renderFrequencyChart(svg: SVGSVGElement, data: WordCount[], totalWords = 0): void {
   const width = svg.clientWidth || 320;
+  const MARGIN = marginFor(width);
   const height = Math.max(data.length, 1) * BAR_HEIGHT + MARGIN.top + MARGIN.bottom;
 
   const selection = d3.select(svg).attr('width', width).attr('height', height);
@@ -32,8 +38,9 @@ export function renderFrequencyChart(svg: SVGSVGElement, data: WordCount[], tota
 
   let group = selection.select<SVGGElement>('g.bars');
   if (group.empty()) {
-    group = selection.append('g').attr('class', 'bars').attr('transform', `translate(${MARGIN.left}, 0)`);
+    group = selection.append('g').attr('class', 'bars');
   }
+  group.attr('transform', `translate(${MARGIN.left}, 0)`);
 
   const bars = group.selectAll<SVGRectElement, WordCount>('rect').data(data, (d) => d.word);
 
