@@ -18,7 +18,7 @@ src/
     stopwords.ts             English stopword set
     frequency.ts              wordFrequency(text, {limit, stopwords}) -> ranked WordCount[]
     sentimentLexicon.ts        AFINN-style polarity table + negators + intensifiers
-    sentiment.ts                analyzeSentiment / analyzeSentimentBySentence
+    sentiment.ts                analyzeSentiment / analyzeSentimentBySentence / formatScore
     readability.ts               analyzeReadability (Flesch Reading Ease + Kincaid Grade)
     readingTime.ts                 estimateReadingMinutes(wordCount)
     summary.ts                      buildSummaryText(...) -> clipboard-ready digest
@@ -48,6 +48,13 @@ textarea value
      renderReadabilityPanel / renderStatsStrip (viz/*)
   -> syncUrl (urlState.ts) via history.replaceState
 ```
+
+`render()` is `renderAnalysis()` (the pipeline above) plus `syncUrl()`.
+The initial paint calls `renderAnalysis()` directly so the built-in
+placeholder sample text never overwrites a clean root URL — only
+user-driven renders (typing, settings changes, file loads) sync the URL.
+The Clear text button empties the input and runs the normal `render()`
+path, so it also clears any shared-link URL state.
 
 There is no persisted app state beyond `localStorage` for the theme choice
 and the URL query param for shareable text — everything else recomputes
