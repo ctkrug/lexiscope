@@ -1,15 +1,10 @@
 import * as d3 from 'd3';
 import type { SentimentResult } from '../analysis/sentiment';
+import { SENTIMENT_COLORS } from './sentimentColors';
 
 const WIDTH = 240;
 const HEIGHT = 130;
 const RADIUS = 100;
-
-const COLORS: Record<SentimentResult['label'], string> = {
-  negative: '#e6553f',
-  neutral: '#9aa1ab',
-  positive: '#3fb56f',
-};
 
 const arcGenerator = d3
   .arc<number>()
@@ -45,7 +40,7 @@ export function renderSentimentGauge(svg: SVGSVGElement, result: SentimentResult
       const interpolate = d3.interpolateNumber(previous, fraction);
       return (t: number) => arcGenerator(interpolate(t)) ?? '';
     })
-    .attr('fill', COLORS[result.label])
+    .attr('fill', SENTIMENT_COLORS[result.label])
     .attr('data-fraction', fraction);
 
   let label = selection.select<SVGTextElement>('text.label');
