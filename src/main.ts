@@ -33,6 +33,7 @@ const fileInput = document.querySelector<HTMLInputElement>('#file-input');
 const pendingIndicator = document.querySelector<HTMLElement>('#pending-indicator');
 const themeToggle = document.querySelector<HTMLButtonElement>('#theme-toggle');
 const copySummaryButton = document.querySelector<HTMLButtonElement>('#copy-summary');
+const clearInputButton = document.querySelector<HTMLButtonElement>('#clear-input');
 
 let lastFrequency: WordCount[] = [];
 let lastSentiment: SentimentResult = { score: 0, matchedWords: 0, label: 'neutral' };
@@ -184,6 +185,11 @@ if (input) {
     debouncedRender(input.value);
   });
   wordLimitInput?.addEventListener('input', () => render(input.value));
+  clearInputButton?.addEventListener('click', () => {
+    input.value = '';
+    render('');
+    input.focus();
+  });
   extraStopwordsInput?.addEventListener('input', () => render(input.value));
 
   if (typeof ResizeObserver !== 'undefined') {
