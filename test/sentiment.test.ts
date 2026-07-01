@@ -52,6 +52,10 @@ describe('analyzeSentiment', () => {
     expect(result.matchedWords).toBe(2);
     expect(result.score).toBeGreaterThan(0);
   });
+
+  it('scores lexicon words regardless of input case', () => {
+    expect(analyzeSentiment('AMAZING')).toEqual(analyzeSentiment('amazing'));
+  });
 });
 
 describe('analyzeSentimentBySentence', () => {
@@ -66,5 +70,10 @@ describe('analyzeSentimentBySentence', () => {
 
   it('returns an empty array for empty text', () => {
     expect(analyzeSentimentBySentence('')).toEqual([]);
+  });
+
+  it('scores a neutral sentence among positive and negative ones', () => {
+    const results = analyzeSentimentBySentence('This is wonderful. The cat sat down. This is terrible.');
+    expect(results.map((r) => r.label)).toEqual(['positive', 'neutral', 'negative']);
   });
 });
