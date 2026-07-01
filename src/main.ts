@@ -71,10 +71,29 @@ function readFileAsText(file: File): Promise<string> {
   });
 }
 
+const PENDING_TEXT_DEFAULT = pendingIndicator?.textContent ?? '';
+
+/** Flashes a failure message in the pending indicator, then restores its usual text. */
+function flashFileErrorMessage(): void {
+  if (!pendingIndicator) return;
+  pendingIndicator.hidden = false;
+  pendingIndicator.textContent = "Couldn't read that file.";
+  setTimeout(() => {
+    if (pendingIndicator) {
+      pendingIndicator.hidden = true;
+      pendingIndicator.textContent = PENDING_TEXT_DEFAULT;
+    }
+  }, 2500);
+}
+
 async function loadFileIntoInput(file: File): Promise<void> {
   if (!input) return;
-  input.value = await readFileAsText(file);
-  render(input.value);
+  try {
+    input.value = await readFileAsText(file);
+    render(input.value);
+  } catch {
+    flashFileErrorMessage();
+  }
 }
 
 /** Merges the built-in stopword list with the comma-separated custom entries. */
