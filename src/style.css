@@ -167,6 +167,19 @@ header p {
   letter-spacing: 0.03em;
 }
 
+#copy-summary {
+  display: block;
+  margin-top: 1rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel-bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
 #visualizations {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
