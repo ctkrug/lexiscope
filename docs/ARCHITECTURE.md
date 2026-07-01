@@ -24,7 +24,9 @@ src/
     summary.ts                      buildSummaryText(...) -> clipboard-ready digest
   viz/                    imperative D3/DOM rendering; takes a mount point + data, nothing else
     frequencyChart.ts        keyed bar chart with hover tooltips, responsive left margin
+    sentimentColors.ts        shared label->color map used by the gauge and the sentence strip
     sentimentGauge.ts         keyed arc gauge, tweened fill transition
+    sentenceSentimentStrip.ts   one segment per sentence, opacity scaled by confidence
     readabilityPanel.ts        two meters (ease, grade) color-coded by easy/medium/hard band
     statsStrip.ts               plain-DOM word/sentence/reading-time strip (no D3)
 test/                  one *.test.ts per src module above, run with Vitest + jsdom
@@ -41,8 +43,9 @@ settings change, it re-derives everything from the current textarea value:
 ```
 textarea value
   -> tokenizeWords / tokenizeSentences (tokenizer.ts)
-  -> wordFrequency / analyzeSentiment / analyzeReadability (analysis/*)
-  -> renderFrequencyChart / renderSentimentGauge / renderReadabilityPanel / renderStatsStrip (viz/*)
+  -> wordFrequency / analyzeSentiment / analyzeSentimentBySentence / analyzeReadability (analysis/*)
+  -> renderFrequencyChart / renderSentimentGauge / renderSentenceSentimentStrip /
+     renderReadabilityPanel / renderStatsStrip (viz/*)
   -> syncUrl (urlState.ts) via history.replaceState
 ```
 
