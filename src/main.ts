@@ -64,6 +64,11 @@ if (input) {
   wordLimitInput?.addEventListener('input', () => render(input.value));
   extraStopwordsInput?.addEventListener('input', () => render(input.value));
 
+  if (frequencySvg && typeof ResizeObserver !== 'undefined') {
+    const debouncedResize = debounce(render, DEBOUNCE_MS);
+    new ResizeObserver(() => debouncedResize(input.value)).observe(frequencySvg.parentElement ?? frequencySvg);
+  }
+
   const sample =
     'Lexiscope is a wonderful little tool. It is not boring at all, ' +
     'and the visualizations feel genuinely alive as you type.';
