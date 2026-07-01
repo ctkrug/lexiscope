@@ -48,6 +48,8 @@ analysis feel alive rather than static.
   param so an analysis can be linked or bookmarked.
 - **Copy analysis summary** — copies a plain-text digest of the current
   scores to the clipboard.
+- **Clear text** — resets the input (and the shared-URL state) in one
+  click, handy after loading a shared link or a file.
 - **Mobile-responsive layout** — panels and controls stack into a single
   column below 600px.
 
