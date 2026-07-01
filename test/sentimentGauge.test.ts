@@ -9,19 +9,19 @@ describe('renderSentimentGauge', () => {
   it('colors the fill arc green for a positive result', () => {
     const svg = makeSvg();
     renderSentimentGauge(svg, { score: 3, matchedWords: 2, label: 'positive' });
-    expect(svg.querySelector('path.fill')?.getAttribute('fill')).toBe('#3fb56f');
+    expect(svg.querySelector('path.fill')?.getAttribute('fill')).toBe('#4f9257');
   });
 
   it('colors the fill arc red for a negative result', () => {
     const svg = makeSvg();
     renderSentimentGauge(svg, { score: -3, matchedWords: 2, label: 'negative' });
-    expect(svg.querySelector('path.fill')?.getAttribute('fill')).toBe('#e6553f');
+    expect(svg.querySelector('path.fill')?.getAttribute('fill')).toBe('#c14e3d');
   });
 
   it('colors the fill arc gray for a neutral result', () => {
     const svg = makeSvg();
     renderSentimentGauge(svg, { score: 0, matchedWords: 0, label: 'neutral' });
-    expect(svg.querySelector('path.fill')?.getAttribute('fill')).toBe('#9aa1ab');
+    expect(svg.querySelector('path.fill')?.getAttribute('fill')).toBe('#a39a86');
   });
 
   it('labels the gauge with the sentiment word and score', () => {

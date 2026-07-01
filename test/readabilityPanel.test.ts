@@ -19,7 +19,7 @@ describe('renderReadabilityPanel', () => {
       fleschReadingEase: 95,
       fleschKincaidGrade: 1,
     });
-    expect(fills(svg)).toEqual(['#3fb56f', '#3fb56f']);
+    expect(fills(svg)).toEqual(['#4f9257', '#4f9257']);
   });
 
   it('colors a hard-to-read result red on both meters', () => {
@@ -31,7 +31,7 @@ describe('renderReadabilityPanel', () => {
       fleschReadingEase: 5,
       fleschKincaidGrade: 17,
     });
-    expect(fills(svg)).toEqual(['#e6553f', '#e6553f']);
+    expect(fills(svg)).toEqual(['#c14e3d', '#c14e3d']);
   });
 
   it('colors a mid-range result amber on both meters', () => {
@@ -43,7 +43,7 @@ describe('renderReadabilityPanel', () => {
       fleschReadingEase: 50,
       fleschKincaidGrade: 9,
     });
-    expect(fills(svg)).toEqual(['#e0a83e', '#e0a83e']);
+    expect(fills(svg)).toEqual(['#d9a13f', '#d9a13f']);
   });
 
   it('clamps out-of-domain values instead of throwing', () => {
@@ -57,6 +57,6 @@ describe('renderReadabilityPanel', () => {
         fleschKincaidGrade: 25,
       }),
     ).not.toThrow();
-    expect(fills(svg)).toEqual(['#e6553f', '#e6553f']);
+    expect(fills(svg)).toEqual(['#c14e3d', '#c14e3d']);
   });
 });

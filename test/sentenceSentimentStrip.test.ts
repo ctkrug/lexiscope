@@ -17,8 +17,8 @@ describe('renderSentenceSentimentStrip', () => {
 
     const segments = svg.querySelectorAll('rect.segment');
     expect(segments).toHaveLength(2);
-    expect(segments[0].getAttribute('fill')).toBe('#3fb56f');
-    expect(segments[1].getAttribute('fill')).toBe('#e6553f');
+    expect(segments[0].getAttribute('fill')).toBe('#4f9257');
+    expect(segments[1].getAttribute('fill')).toBe('#c14e3d');
   });
 
   it('includes a tooltip with a truncated sentence preview and score', () => {

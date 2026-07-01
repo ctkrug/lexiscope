@@ -36,7 +36,7 @@ describe('renderFrequencyChart', () => {
     renderFrequencyChart(narrow, [{ word: 'cat', count: 1 }]);
     const narrowTransform = narrow.querySelector('g.bars')?.getAttribute('transform');
 
-    expect(wideTransform).toBe('translate(90, 0)');
+    expect(wideTransform).toBe('translate(108, 0)');
     expect(narrowTransform).toBe('translate(56, 0)');
   });
 
