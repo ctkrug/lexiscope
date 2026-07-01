@@ -9,6 +9,10 @@ import { renderReadabilityPanel } from './viz/readabilityPanel';
 import { renderStatsStrip } from './viz/statsStrip';
 import { oppositeTheme, resolveInitialTheme, type Theme } from './theme';
 import { decodeTextFromQuery, encodeTextToQuery } from './urlState';
+import { buildSummaryText } from './analysis/summary';
+import type { WordCount } from './analysis/frequency';
+import type { SentimentResult } from './analysis/sentiment';
+import type { ReadabilityResult } from './analysis/readability';
 
 const DEBOUNCE_MS = 120;
 const DEFAULT_WORD_LIMIT = 15;
@@ -24,6 +28,17 @@ const statsStripEl = document.querySelector<HTMLElement>('#stats-strip');
 const fileInput = document.querySelector<HTMLInputElement>('#file-input');
 const pendingIndicator = document.querySelector<HTMLElement>('#pending-indicator');
 const themeToggle = document.querySelector<HTMLButtonElement>('#theme-toggle');
+const copySummaryButton = document.querySelector<HTMLButtonElement>('#copy-summary');
+
+let lastFrequency: WordCount[] = [];
+let lastSentiment: SentimentResult = { score: 0, matchedWords: 0, label: 'neutral' };
+let lastReadability: ReadabilityResult = {
+  sentenceCount: 0,
+  wordCount: 0,
+  syllableCount: 0,
+  fleschReadingEase: 0,
+  fleschKincaidGrade: 0,
+};
 
 function applyTheme(theme: Theme): void {
   document.documentElement.dataset.theme = theme;
@@ -82,13 +97,16 @@ function render(text: string): void {
   if (pendingIndicator) pendingIndicator.hidden = true;
   syncUrl(text);
 
-  if (frequencySvg) {
-    const frequency = wordFrequency(text, { limit: activeWordLimit(), stopwords: activeStopwords() });
-    renderFrequencyChart(frequencySvg, frequency, tokenizeWords(text).length);
-  }
-  if (sentimentSvg) renderSentimentGauge(sentimentSvg, analyzeSentiment(text));
+  const frequency = wordFrequency(text, { limit: activeWordLimit(), stopwords: activeStopwords() });
+  lastFrequency = frequency;
+  if (frequencySvg) renderFrequencyChart(frequencySvg, frequency, tokenizeWords(text).length);
+
+  const sentiment = analyzeSentiment(text);
+  lastSentiment = sentiment;
+  if (sentimentSvg) renderSentimentGauge(sentimentSvg, sentiment);
 
   const readability = analyzeReadability(text);
+  lastReadability = readability;
   if (readabilitySvg) renderReadabilityPanel(readabilitySvg, readability);
   if (statsStripEl) {
     renderStatsStrip(statsStripEl, {
@@ -105,6 +123,18 @@ function debounce(fn: (text: string) => void, delay: number): (text: string) => 
     handle = setTimeout(() => fn(text), delay);
   };
 }
+
+copySummaryButton?.addEventListener('click', () => {
+  const summary = buildSummaryText({ frequency: lastFrequency, sentiment: lastSentiment, readability: lastReadability });
+  navigator.clipboard.writeText(summary).then(() => {
+    if (!copySummaryButton) return;
+    const original = copySummaryButton.textContent;
+    copySummaryButton.textContent = 'Copied!';
+    setTimeout(() => {
+      copySummaryButton.textContent = original;
+    }, 1500);
+  });
+});
 
 if (input) {
   const debouncedRender = debounce(render, DEBOUNCE_MS);
