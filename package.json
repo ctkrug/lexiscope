@@ -5,6 +5,9 @@
   "type": "module",
   "description": "Live word-frequency, sentiment, and readability visualization as you type",
   "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
