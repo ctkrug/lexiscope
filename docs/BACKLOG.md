@@ -38,7 +38,7 @@ commits.
 
 ## Epic 4: Deployment & sharing
 
-- [ ] Verify and document the subpath deployment flow for
+- [x] Verify and document the subpath deployment flow for
       `apps.charliekrug.com/lexiscope` (confirm relative asset resolution
       end-to-end, not just in local preview).
 - [x] Add URL-based sharing: encode the current text into a query param so
