@@ -67,6 +67,29 @@ header p {
   width: 16rem;
 }
 
+#stats-strip {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #55606b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
 #visualizations {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
