@@ -39,4 +39,22 @@ describe('renderFrequencyChart', () => {
     expect(wideTransform).toBe('translate(90, 0)');
     expect(narrowTransform).toBe('translate(56, 0)');
   });
+
+  it('renders no bars for empty data without throwing', () => {
+    const svg = makeSvg();
+    expect(() => renderFrequencyChart(svg, [], 0)).not.toThrow();
+    expect(svg.querySelectorAll('rect')).toHaveLength(0);
+  });
+
+  it('removes stale bars when the word list shrinks', async () => {
+    const svg = makeSvg();
+    renderFrequencyChart(svg, [{ word: 'cat', count: 3 }, { word: 'mat', count: 1 }], 20);
+    renderFrequencyChart(svg, [{ word: 'cat', count: 3 }], 20);
+
+    // Bar removal is animated (200ms exit transition), so it isn't
+    // synchronous with the render call — labels are, though.
+    expect(svg.querySelectorAll('text')).toHaveLength(1);
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    expect(svg.querySelectorAll('rect')).toHaveLength(1);
+  });
 });
