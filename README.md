@@ -1,5 +1,7 @@
 # Lexiscope
 
+**▶ Live demo — [apps.charliekrug.com/lexiscope](https://apps.charliekrug.com/lexiscope/)**
+
 [![CI](https://github.com/ctkrug/lexiscope/actions/workflows/ci.yml/badge.svg)](https://github.com/ctkrug/lexiscope/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
